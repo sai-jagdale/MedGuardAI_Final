@@ -1,0 +1,33 @@
+1. Configuring the Client side web used react vite
+    cmd used - npm create vite@latest client-web
+               cd client-web
+               npm install
+               npm run dev --- to test
+2. Created 2nd folder as "server" this is Django+REST
+    in this created venv
+    Create Django freme work using 
+    cmd - pip install django djangorestframework psycopg2-binary python-dotenv
+    to create django project - django-admin startproject medguard .
+            created apps folder in server
+                django-admin startapp accounts
+                django-admin startapp medicine
+                django-admin startapp ocr
+                django-admin startapp barcode
+                django-admin startapp files
+                django-admin startapp history
+
+3. Flutter Skeleton
+     mkdir client-mobile
+     to create flutter - flutter create client-mobile
+     to test - flutter run
+
+
+
+
+to create admin user to access user passwords etc...
+    python manage.py createsuperuser
+        Username (leave blank to use 'rajendra'): SaiJagdale
+        Email address: saijagdale1406@gmail.com
+        Password: Sai@1406
+    GO TO : http://127.0.0.1:8001/admin/
+            enter Username and password 
