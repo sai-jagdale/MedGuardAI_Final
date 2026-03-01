@@ -1,11 +1,15 @@
-// src/App.jsx
-const App = () => {
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
+
+function App() {
   return (
-    <div>
-      <h1>MedGuard AI</h1>
-      <p>Medicine Verification System</p>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;
