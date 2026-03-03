@@ -32,6 +32,7 @@ export default function Navbar() {
         <button 
           className="mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           <span className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}></span>
         </button>
@@ -64,7 +65,6 @@ export default function Navbar() {
                 className={isActive("/dashboard") ? "active" : ""}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="nav-icon">📊</span>
                 Dashboard
               </Link>
               <Link 
@@ -72,7 +72,6 @@ export default function Navbar() {
                 className={isActive("/check") ? "active" : ""}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="nav-icon">🔍</span>
                 Verify Medicine
               </Link>
               <Link 
@@ -80,26 +79,17 @@ export default function Navbar() {
                 className={isActive("/history") ? "active" : ""}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="nav-icon">📜</span>
                 History
               </Link>
-            </>
-          )}
-
-          {/* User Menu */}
-          {user && (
-            <div className="user-menu">
-              <div className="user-info">
-                <span className="user-avatar">
-                  {user.username?.charAt(0).toUpperCase()}
-                </span>
-                <span className="user-name">{user.username}</span>
+              
+              {/* User Menu */}
+              <div className="user-menu">
+                <span className="user-name">{user?.username}</span>
+                <button className="logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
               </div>
-              <button className="logout-btn" onClick={handleLogout}>
-                <span className="nav-icon">🚪</span>
-                Logout
-              </button>
-            </div>
+            </>
           )}
         </div>
       </div>
