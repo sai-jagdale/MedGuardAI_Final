@@ -1,0 +1,53 @@
+/* src/components/Layout.css */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px; /* Width of sidebar */
+  transition: margin-left 0.3s;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  background: #f9fafb;
+  min-height: calc(100vh - 70px); /* Subtract topbar height */
+}
+
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.layout-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 1.2rem;
+  color: #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-section {
+    margin-left: 0;
+  }
+  
+  .content-area {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-area {
+    padding: 1rem;
+  }
+}

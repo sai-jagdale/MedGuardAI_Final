@@ -53,9 +53,11 @@ INSTALLED_APPS = [
 
 # Django REST Framework global configuration
 REST_FRAMEWORK = {
-    # Default authentication mechanism
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
 

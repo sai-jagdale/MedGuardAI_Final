@@ -1,51 +1,31 @@
-# HTTP status codes (201, 400, etc.)
-from rest_framework import status
-
-# Used to send JSON responses
-from rest_framework.response import Response
-
-# Base class for API endpoints
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
 
-# Import the serializer we created
-from .serializers import RegisterSerializer
-from .serializers import LoginSerializer
 
 class RegisterView(APIView):
-    """
-    Handles POST request for user registration
-    URL: /api/auth/register/
-    """
+    permission_classes = [AllowAny]   # 🔥 THIS LINE IS CRITICAL
 
     def post(self, request):
-        """Runs when a POST request is sent to this endpoint request.data contains JSON sent by client"""
-        # Pass incoming JSON data to serializer
-        serializer = RegisterSerializer(data=request.data)
-        # Validate incoming data
-        if serializer.is_valid():
-            # Calls serializer.create()
-            serializer.save()
-            # Send success response
+        username = request.data.get("username")
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        if User.objects.filter(username=username).exists():
             return Response(
-                {"message": "User registered successfully"},
-                status=status.HTTP_201_CREATED
+                {"error": "Username already exists"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
-        # If validation fails, send errors
-        return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+
+        User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
         )
 
-class LoginView(APIView):
-    """
-    Handles POST request for login
-    URL: /api/auth/login/
-    """
-    def post(self, request):
-        """Runs when client sends username & password"""
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            # serializer.validated_data contains tokens
-            return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "User created successfully"},
+            status=status.HTTP_201_CREATED,
+        )
