@@ -1,12 +1,18 @@
-# Used to define URL paths
 from django.urls import path
-
-# Import the view
-from .views import RegisterView, LoginView
+from .views import (
+    RegisterView,
+    LoginView,
+    LogoutView,
+    ProfileView,
+    UpdateProfileView
+)
+from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
-    # When client hits /register/,
-    # Django calls RegisterView
-    path('register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('logout/', LogoutView.as_view()),
+    path('profile/', ProfileView.as_view()),
+    path('profile/update/', UpdateProfileView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
 ]

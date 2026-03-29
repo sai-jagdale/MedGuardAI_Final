@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from logging import config
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+AUTH_USER_MODEL = 'accounts.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,40 +43,48 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party
-    'rest_framework',
-    'corsheaders' ,
-
     # Local apps
-    'apps.accounts.apps.AccountsConfig',
-    'apps.medicine.apps.MedicineConfig',
-    'apps.ocr.apps.OcrConfig',
-    'apps.barcode.apps.BarcodeConfig',
-    'apps.files.apps.FilesConfig',
-    'apps.history.apps.HistoryConfig',
+    'apps.accounts',
+    'apps.medicine',
+    'apps.barcode',
+    'apps.ocr',
+    'apps.history',
+    'apps.files',
+    'apps.symptom',
+    'apps.core',
+
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
 ]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'medguard_db',
+        'USER': 'medguard_sai',
+        'PASSWORD': 'medguard_sai',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Django REST Framework global configuration
 REST_FRAMEWORK = {
-    # Default authentication mechanism
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+     # Default authentication mechanism
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES':     ('rest_framework.permissions.IsAuthenticated',),
+    'EXCEPTION_HANDLER': 'apps.accounts.exceptions.medguard_exception_handler',
 }
 
 # JWT token configuration
 SIMPLE_JWT = {
-    # Access token lifetime (short-lived)
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-
-    # Refresh token lifetime (long-lived)
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-
-    # Automatically rotate refresh tokens
-    'ROTATE_REFRESH_TOKENS': True,
-
-    # Blacklist old refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,
+    'ACCESS_TOKEN_LIFETIME':    timedelta(minutes=60), # Access token lifetime (short-lived)
+    'REFRESH_TOKEN_LIFETIME':   timedelta(days=7),     # Refresh token lifetime (long-lived)
+    'ROTATE_REFRESH_TOKENS':    True,                  # Automatically rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,                  # Blacklist old refresh tokens
+    'AUTH_HEADER_TYPES':        ('Bearer',),           # Use 'Bearer' prefix for JWT tokens in Authorization header
 }
 
 
@@ -104,18 +117,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'medguard.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

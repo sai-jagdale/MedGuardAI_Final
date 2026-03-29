@@ -24,6 +24,9 @@ urlpatterns = [
     # All auth-related routes go here
     # /api/auth/register/
     path('api/auth/', include('apps.accounts.urls')),
+    path('api/server/medicine/', include('apps.medicine.urls')),
+    path('api/server/auth/', include('apps.accounts.urls')),
+    path('api/server/medicine/', include('apps.medicine.urls')),
+    path('api/server/symptom/', include('apps.symptom.urls')),
 ]
-
 
