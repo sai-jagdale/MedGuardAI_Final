@@ -1,9 +1,8 @@
 // src/pages/AuthPage.jsx
 import { useState, useContext, useEffect } from "react";
 import { loginUser, registerUser } from "../services/authService";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
-import "./AuthPage.css"; // Changed from "../AuthPage.css" to "./AuthPage.css"
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -48,7 +47,7 @@ export default function AuthPage() {
         // LOGIN
         console.log("Attempting login with:", form.username);
         const res = await loginUser({
-          username: form.username,
+          email: form.username,
           password: form.password,
         });
         

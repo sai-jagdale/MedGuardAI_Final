@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
+import Landing from "../pages/Landing";
 import AuthPage from "../pages/AuthPage";
 import Dashboard from "../pages/Dashboard";
 import CheckMedicine from "../pages/CheckMedicine";
@@ -9,13 +10,14 @@ import Layout from "../components/Layout";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
-  return user ? <Layout>{children}</Layout> : <Navigate to="/" />;
+  return user ? <Layout>{children}</Layout> : <Navigate to="/auth" />;
 };
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<AuthPage />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/auth" element={<AuthPage />} />
 
       <Route
         path="/dashboard"

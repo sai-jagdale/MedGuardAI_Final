@@ -4,7 +4,6 @@ import { Navigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 import { AuthContext } from "../context/AuthContext";
-import "./Layout.css";
 
 export default function Layout({ children }) {
   const { user, loading } = useContext(AuthContext);

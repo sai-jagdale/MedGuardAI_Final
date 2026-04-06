@@ -1,6 +1,5 @@
-// src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode"; // Install this: npm install jwt-decode
+import jwtDecode from "jwt-decode"; 
 
 export const AuthContext = createContext();
 
@@ -55,3 +54,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;

@@ -1,7 +1,6 @@
 // src/pages/Landing.jsx
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./Landing.css";
 
 export default function Landing() {
   const navigate = useNavigate();

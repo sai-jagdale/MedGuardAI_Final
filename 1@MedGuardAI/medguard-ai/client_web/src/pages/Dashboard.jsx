@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./Dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();

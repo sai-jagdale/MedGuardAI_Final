@@ -2,7 +2,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "./Topbar.css";
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
