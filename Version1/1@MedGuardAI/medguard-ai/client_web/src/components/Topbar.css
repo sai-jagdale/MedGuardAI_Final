@@ -1,0 +1,230 @@
+/* =========================================================
+   Topbar Styling - MedGuard AI
+   ========================================================= */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--mg-glass-border);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  z-index: 40;
+  height: 80px;
+  box-sizing: border-box;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background var(--transition-fast);
+}
+
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--mg-text);
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
+
+.menu-toggle span:last-child {
+  margin-bottom: 0;
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--mg-text);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Icon Buttons */
+.topbar-icon-btn {
+  background: white;
+  border: 1px solid var(--mg-glass-border);
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all var(--transition-smooth);
+}
+
+.topbar-icon-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.topbar-icon-btn .icon {
+  font-size: 1.2rem;
+}
+
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--mg-danger);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 20px;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+  animation: pulseGlow 2s infinite;
+}
+
+/* User Profile */
+.user-profile {
+  position: relative;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 12px 6px 6px;
+  background: white;
+  border-radius: 30px;
+  border: 1px solid var(--mg-glass-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all var(--transition-smooth);
+}
+
+.profile-trigger:hover {
+  background: var(--mg-bg);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.profile-avatar {
+  background: linear-gradient(135deg, var(--mg-primary), var(--mg-primary-light));
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--mg-text);
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+  color: var(--mg-text-muted);
+  transition: transform var(--transition-fast);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  min-width: 220px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.1);
+  border: 1px solid var(--mg-glass-border);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.2s ease forwards;
+  z-index: 100;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--mg-text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  transition: background var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background: var(--mg-bg);
+  color: var(--mg-primary);
+}
+
+.dropdown-item .icon {
+  font-size: 1.1rem;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 6px 0;
+}
+
+.dropdown-item.logout {
+  color: var(--mg-danger);
+}
+
+.dropdown-item.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .topbar {
+    padding: 16px 20px;
+  }
+
+  .topbar-right {
+    gap: 12px;
+  }
+
+  .profile-name,
+  .dropdown-arrow {
+    display: none;
+  }
+
+  .profile-trigger {
+    padding: 4px;
+  }
+}

@@ -1,0 +1,115 @@
+.setup-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent),
+        radial-gradient(circle at bottom left, rgba(13, 148, 136, 0.05), transparent),
+        var(--mg-bg);
+    padding: 40px 20px;
+}
+
+.setup-container {
+    background: var(--mg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--mg-glass-border);
+    border-radius: 24px;
+    padding: 48px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: var(--mg-card-shadow);
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: var(--mg-primary);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.setup-header h1 {
+    font-size: 2rem;
+    color: var(--mg-text);
+    margin-bottom: 12px;
+    font-weight: 800;
+}
+
+.setup-header p {
+    color: var(--mg-text-muted);
+    font-size: 1.05rem;
+}
+
+.avatar-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--mg-glass-border);
+}
+
+.avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    border: 3px solid white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+.btn-secondary.small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+}
+
+.setup-form .form-group textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 14px;
+    border: 1px solid #cbd5e1;
+    background: white;
+    font-size: 1.05rem;
+    color: var(--mg-text);
+    transition: all var(--transition-smooth);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.setup-form .form-group textarea:focus {
+    outline: none;
+    border-color: var(--mg-primary);
+    box-shadow: 0 0 0 5px var(--mg-primary-glow), inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.full-width {
+    width: 100%;
+}
