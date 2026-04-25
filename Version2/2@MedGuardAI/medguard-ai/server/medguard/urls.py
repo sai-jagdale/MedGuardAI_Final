@@ -23,9 +23,8 @@ urlpatterns = [
 
     # All auth-related routes go here
     # /api/auth/register/
-    path('api/auth/', include('apps.accounts.urls')),
-    path('api/ai/', include('apps.aiassistant.urls')),
-    path('api/history/', include('apps.history.urls')),
+    path('api/server/ai/', include('apps.aiassistant.urls')),
+    path('api/server/history/', include('apps.history.urls')),
     path('api/server/auth/', include('apps.accounts.urls')),
     path('api/server/text/', include('apps.medicine.urls')),
 ]

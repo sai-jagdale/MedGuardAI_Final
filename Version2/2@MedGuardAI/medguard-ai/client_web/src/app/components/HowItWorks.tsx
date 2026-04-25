@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
-import { Footer } from "./Footer";
 
 export function HowItWorks() {
   const steps = [
@@ -64,7 +63,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <div className="min-h-screen py-20">
+    <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-20">
@@ -154,8 +153,6 @@ export function HowItWorks() {
           </div>
         </div>
       </div>
-      {/* Footer Section */}
-    <Footer />
     </div>
   );
 }

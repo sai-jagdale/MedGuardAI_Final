@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
+import { Features } from "./Features"
+import { Verify } from "./Verify"
+import { AIAssistant } from "./AIAssistant";
+import { History } from "./History";
+import { About } from "./About";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12">
+    <footer className="mt-12 bg-gray-900 text-gray-300 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="grid md:grid-cols-4 gap-8 mb-8">
@@ -42,8 +47,8 @@ export function Footer() {
               </li>
 
               <li>
-                <Link to="/symptom-checker" className="hover:text-white transition-colors">
-                  Symptom Checker
+                <Link to="/ai-assistant" className="hover:text-white transition-colors">
+                  AI Assistant
                 </Link>
               </li>
 

@@ -17,11 +17,10 @@ import {
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Footer } from "./Footer";
 
 export function Home() {
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-8 pb-20 lg:pt-16 lg:pb-32">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-100/40 via-transparent to-green-100/40 pointer-events-none"></div>
@@ -388,9 +387,6 @@ export function Home() {
           </Link>
         </div>
       </section>
-       {/* Footer Section */}
-      <Footer />
-      
     </div>
   );
 }

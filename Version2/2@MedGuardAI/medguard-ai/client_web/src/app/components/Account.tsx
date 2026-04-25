@@ -20,7 +20,6 @@ import { Label } from "./ui/label";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiService } from "../../services/api";
 import { toast } from "sonner";
-import { Footer } from "./Footer";
 
 export function Account() {
   const [isEditing, setIsEditing] = useState(false);
@@ -97,7 +96,7 @@ export function Account() {
   };
 
   return (
-    <div className="min-h-screen py-20">
+    <div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12">
@@ -251,8 +250,6 @@ export function Account() {
           </CardContent>
         </Card>
       </div>
-      {/* Footer Section */}
-    <Footer />
     </div>
   );
 }

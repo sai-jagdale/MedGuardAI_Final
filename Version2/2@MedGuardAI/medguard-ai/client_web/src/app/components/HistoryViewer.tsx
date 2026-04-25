@@ -1,5 +1,5 @@
 export function HistoryViewer({ item, onClose }: any) {
-  if (!item) return null;
+  if (!item || item.length === 0) return null;
 
   return (
     <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
@@ -13,62 +13,28 @@ export function HistoryViewer({ item, onClose }: any) {
           </button>
         </div>
 
-        {/* CHAT VIEW */}
-        {item.type === "chat" ? (
-          <div className="space-y-4">
-            {item.conversation.map((msg: any, i: number) => (
-              <div key={i} className="space-y-2">
-                
-                {msg.user && (
-                  <div className="flex justify-end">
-                    <div className="bg-[#4A90E2] text-white px-4 py-2 rounded-xl max-w-xs">
-                      {msg.user}
-                    </div>
-                  </div>
-                )}
-
-                {msg.ai && (
-                  <div className="flex justify-start">
-                    <div className="bg-gray-100 px-4 py-2 rounded-xl max-w-xs">
-                      {msg.ai}
-                    </div>
-                  </div>
-                )}
-
-              </div>
-            ))}
-          </div>
-        ) : (
-          /* MEDICINE VIEW */
-          <div className="space-y-4">
-
-            <h2 className="text-xl font-semibold">{item.medicine}</h2>
-
-            <p>
-              Status:{" "}
-              <span
-                className={
-                  item.status === "authentic"
-                    ? "text-green-500"
-                    : "text-red-500"
-                }
+        {/* CHAT UI */}
+        <div className="space-y-4">
+          {item.map((msg: any, i: number) => (
+            <div
+              key={i}
+              className={`flex ${
+                msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`px-4 py-2 rounded-xl max-w-xs ${
+                  msg.role === "user"
+                    ? "bg-[#4A90E2] text-white"
+                    : "bg-gray-100 text-gray-800"
+                }`}
               >
-                {item.status}
-              </span>
-            </p>
+                {msg.content}
+              </div>
+            </div>
+          ))}
+        </div>
 
-            <p>Confidence: {item.confidence}%</p>
-            <p>Expiry: {item.expiry}</p>
-            <p>Price: {item.price}</p>
-
-            {item.image && (
-              <img
-                src={item.image}
-                className="w-full rounded-xl"
-              />
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

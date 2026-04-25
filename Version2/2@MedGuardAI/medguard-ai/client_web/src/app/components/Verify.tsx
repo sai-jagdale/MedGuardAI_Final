@@ -23,7 +23,6 @@ import { Label } from "./ui/label";
 import { useAuth } from "../../contexts/AuthContext";
 import { BarcodeInput } from "./inputs/BarcodeInput";
 import { TextInput } from "./inputs/TextInput";
-import { Footer } from "./Footer";
 
 export function Verify() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -126,7 +125,7 @@ export function Verify() {
   };
 
   return (
-    <div className="min-h-screen py-20">
+    <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -384,8 +383,6 @@ export function Verify() {
           </Card>
         </div>
       </div>
-      {/* Footer Section */}
-    <Footer />
     </div>
   );
 }

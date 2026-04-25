@@ -17,7 +17,6 @@ import { Input } from "./ui/input";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiService } from "../../services/api";
 import { toast } from "sonner";
-import { Footer } from "./Footer";
 import { HistoryViewer } from "./HistoryViewer";
 
 export function History() {
@@ -25,7 +24,7 @@ export function History() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated , accessToken } = useAuth();
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -33,18 +32,31 @@ export function History() {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
-    } else {
+    } else if (accessToken) {
       fetchHistory();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, accessToken]);
 
   const fetchHistory = async () => {
+    if (!accessToken) return;
     setIsLoading(true);
     try {
-      const history = await apiService.getMedicineHistory();
-      console.log("API DATA:", history);
-      setMedicineHistory(history);
-    } catch (error: any) {
+      const res = await fetch(
+        "http://127.0.0.1:8000/api/server/history/sessions/",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Failed request");
+      }
+      const data = await res.json();
+      console.log("HISTORY DATA:", data);
+      setMedicineHistory(data);
+    } catch (error) {
+      console.error("History error:", error);
       toast.error("Failed to load history");
       setMedicineHistory([]);
     } finally {
@@ -87,23 +99,42 @@ export function History() {
     }
   };
 
-  const filteredHistory = medicineHistory.filter((item) => {
-  // 🔍 Search for both medicine + chat
-    const matchesSearch =
-      (item.medicine || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.message || "").toLowerCase().includes(searchQuery.toLowerCase());
+  const handleOpen = async (item: any) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:8000/api/server/history/messages/${item.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
-    // 🎯 Filter logic (includes chat)
+      if (!res.ok) throw new Error("Failed");
+
+      const data = await res.json();
+
+      setSelectedItem(data); // messages array
+      setViewerOpen(true);
+
+    } catch (error) {
+      toast.error("Failed to load chat");
+    }
+  };
+
+  const filteredHistory = medicineHistory.filter((item) => {
+    const matchesSearch =
+      (item.preview || "").toLowerCase().includes(searchQuery.toLowerCase());
+
     const matchesFilter =
       filterStatus === "all" ||
-      item.status === filterStatus ||
       (filterStatus === "chat" && item.type === "chat");
 
     return matchesSearch && matchesFilter;
   });
 
   return (
-    <div className="min-h-screen py-20">
+    <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12">
@@ -188,35 +219,36 @@ export function History() {
             ) : filteredHistory.length > 0 ? (
               <div className="space-y-3">
                 {filteredHistory.map((item) => {
-                  const config = getStatusConfig(item.status);
-                  const StatusIcon = config.icon;
                   return (
                     <div
-                        key={item.id}
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setViewerOpen(true);
-                        }}
-                        className="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:shadow-lg hover:scale-[1.01] transition-all cursor-pointer"
-                      >
+                      key={item.id}
+                      onClick={() => handleOpen(item)} // 🔥 IMPORTANT CHANGE
+                      className="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:shadow-lg hover:scale-[1.01] transition-all cursor-pointer"
+                    >
                       <div className="flex items-center gap-4">
-                        <div
-                          className={`w-12 h-12 ${config.bg} rounded-2xl flex items-center justify-center shadow-sm`}
-                        >
-                          <StatusIcon className={`w-6 h-6 ${config.text}`} />
+
+                        {/* ICON (simple for chat) */}
+                        <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center shadow-sm">
+                          <HistoryIcon className="w-6 h-6 text-[#4A90E2]" />
                         </div>
+
+                        {/* TEXT */}
                         <div>
-                          <p className="font-semibold text-gray-900">{item.medicine}</p>
-                          <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
+                          <p className="text-sm text-gray-500 flex items-center gap-2">
                             <Calendar className="w-3 h-3" />
-                            {item.date} • {item.confidence}% confidence
+                            {item.date}
+                          </p>
+
+                          {/* 🔥 CHAT PREVIEW */}
+                          <p className="font-semibold text-gray-900 mt-1">
+                            {item.preview?.slice(0, 40)}...
                           </p>
                         </div>
                       </div>
-                      <div
-                        className={`px-4 py-1.5 ${config.bg} ${config.text} rounded-full text-xs font-semibold capitalize`}
-                      >
-                        {item.status}
+
+                      {/* OPTIONAL TAG */}
+                      <div className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs">
+                        Chat
                       </div>
                     </div>
                   );
@@ -255,8 +287,6 @@ export function History() {
           onClose={() => setViewerOpen(false)}
         />
       )}
-      {/* Footer Section */}
-    <Footer />
     </div>
   );
 }
