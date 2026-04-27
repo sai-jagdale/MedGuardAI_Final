@@ -47,7 +47,6 @@ Phase 2 introduces:
 
 * Google Vision API
 * Gemini API
-* PaddleOCR / Tesseract
 * Google Custom Search
 
 ---
@@ -74,31 +73,24 @@ MedGuard-AI-Phase2/
 └── README.md
 ```
 
----
-
-## ⚠️ License (IMPORTANT)
-
-You asked for: **“view only, no copy”**
-
-👉 Straight truth:
-GitHub **cannot technically prevent copying**. Anyone can still copy code.
-
-But you can legally protect it using a **Proprietary License**.
+Got it 👍 — you want it **simple, clean, and professional**, not dramatic or casual
 
 ---
 
-### ✅ Use This License (Recommended)
+## 📜 License
 
-Create a file named `LICENSE` and paste this:
+This project is proprietary and owned by **Sai Jagdale & Team**.
 
-```
-Copyright (c) 2026 Sai Jagdale
-All rights reserved.
-This project is proprietary and confidential.
-Permission is granted to view this repository for educational and reference purposes only.
-Unauthorized copying, modification, distribution, sublicensing, or use of this code, in whole or in part, is strictly prohibited without explicit written permission from the author.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
-```
+You are allowed to view this repository for educational and reference purposes only.
+
+You are **not allowed** to:
+
+* Copy the code
+* Modify the code
+* Use it in your own projects
+* Distribute or share it
+
+Any unauthorized use of this project is strictly prohibited.
 
 ---
 
