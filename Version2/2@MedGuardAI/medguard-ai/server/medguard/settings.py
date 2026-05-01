@@ -10,6 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from decouple import config
+from datetime import timedelta
+from pathlib import Path
+from logging import config
 import os
 from dotenv import load_dotenv
 
@@ -17,12 +21,6 @@ load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
-GOOGLE_CLOUD_VISION_API_KEY = os.getenv("GOOGLE_CLOUD_VISION_API_KEY")
-
-from logging import config
-from pathlib import Path
-from datetime import timedelta
-from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -62,6 +60,8 @@ INSTALLED_APPS = [
     'apps.symptom',
     'apps.aiassistant',
 
+    'pgvector.django', #Added This for pgvector support
+
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -82,7 +82,7 @@ DATABASES = {
 
 # Django REST Framework global configuration
 REST_FRAMEWORK = {
-     # Default authentication mechanism
+    # Default authentication mechanism
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES':     ('rest_framework.permissions.IsAuthenticated',),
     'EXCEPTION_HANDLER': 'apps.accounts.exceptions.medguard_exception_handler',
@@ -90,11 +90,16 @@ REST_FRAMEWORK = {
 
 # JWT token configuration
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME':    timedelta(minutes=60), # Access token lifetime (short-lived)
-    'REFRESH_TOKEN_LIFETIME':   timedelta(days=7),     # Refresh token lifetime (long-lived)
-    'ROTATE_REFRESH_TOKENS':    True,                  # Automatically rotate refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,                  # Blacklist old refresh tokens
-    'AUTH_HEADER_TYPES':        ('Bearer',),           # Use 'Bearer' prefix for JWT tokens in Authorization header
+    # Access token lifetime (short-lived)
+    'ACCESS_TOKEN_LIFETIME':    timedelta(minutes=60),
+    # Refresh token lifetime (long-lived)
+    'REFRESH_TOKEN_LIFETIME':   timedelta(days=7),
+    # Automatically rotate refresh tokens
+    'ROTATE_REFRESH_TOKENS':    True,
+    # Blacklist old refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,
+    # Use 'Bearer' prefix for JWT tokens in Authorization header
+    'AUTH_HEADER_TYPES':        ('Bearer',),
 }
 
 

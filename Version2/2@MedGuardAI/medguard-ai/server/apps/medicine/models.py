@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from pgvector.django import VectorField
+
 
 class Medicine(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -17,11 +19,16 @@ class Medicine(models.Model):
 
     created_at = models.DateTimeField(null=True, blank=True)
 
+    embedding = VectorField(dimensions=768, null=True,
+                            blank=True)  # Added this for embeddings
+
     def __str__(self):
         return self.name
 
+
 class VerificationLog(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
 
     input_type = models.CharField(max_length=50)  # text / barcode / image
