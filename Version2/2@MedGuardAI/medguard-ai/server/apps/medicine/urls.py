@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import TextGoogleSearchView
+from .views import verify_medicine_text
 
 urlpatterns = [
-    path("text-google-search/", TextGoogleSearchView.as_view()),
+    path('verify/text/', verify_medicine_text),
 ]

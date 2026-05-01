@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/server/history/', include('apps.history.urls')),
     path('api/server/auth/', include('apps.accounts.urls')),
     path('api/server/text/', include('apps.medicine.urls')),
-    path('api/server/barcode/', include('apps.barcode.urls')),
     path('api/server/ocr/', include('apps.ocr.urls')),
+    path("api/server/barcode/", include("apps.barcode.urls")),
 ]
 

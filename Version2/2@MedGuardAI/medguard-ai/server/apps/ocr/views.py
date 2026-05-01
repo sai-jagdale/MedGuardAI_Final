@@ -21,5 +21,6 @@ class OCRAPIView(APIView):
             return Response({"error": "Text extraction failed"}, status=500)
 
         return Response({
-            "extracted_text": text
+            "agent": "ocr",
+            "raw_text": text
         })

@@ -1,75 +1,57 @@
-import requests
+# ai_agents/web_agent.py
+
 import os
+import requests
 import re
+from dotenv import load_dotenv
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
+load_dotenv()
 
-
-def search_google(query):
-    url = "https://www.googleapis.com/customsearch/v1"
-
-    params = {
-        "key": settings.GOOGLE_API_KEY,
-        "cx": settings.SEARCH_ENGINE_ID,
-        "q": query,
-    }
-
-    response = requests.get(url, params=params)
-
-    data = response.json()
-
-    print("QUERY:", query)
-    print("RESPONSE:", data)   # 🔥 ADD THIS
-
-    return data
+API_KEY = os.getenv("GOOGLE_API_KEY")
+CX = os.getenv("SEARCH_ENGINE_ID")
 
 
-def extract_info(results):
-    snippets = []
+def search_medicine_shelf_life(medicine_name):
+    try:
+        query = f"{medicine_name} medicine shelf life expiry period years"
 
-    for item in results.get("items", []):
-        snippets.append(item.get("snippet", ""))
+        url = "https://www.googleapis.com/customsearch/v1"
 
-    text = " ".join(snippets)
+        params = {
+            "key": API_KEY,
+            "cx": CX,
+            "q": query,
+        }
 
-    return text
+        response = requests.get(url, params=params)
+        data = response.json()
 
-def extract_shelf_life(text):
-    text = text.lower()
+        results = []
 
-    # Find years (e.g. 2 years, 2-3 years)
-    year_matches = re.findall(r'(\d+)\s*[-to]*\s*(\d+)?\s*years?', text)
+        if "items" in data:
+            for item in data["items"]:
+                snippet = item.get("snippet", "")
+                results.append(snippet)
 
-    if year_matches:
-        values = []
-        for match in year_matches:
-            nums = [int(x) for x in match if x]
-            values.extend(nums)
+        return results
 
-        min_years = min(values)
-        return min_years * 12  # convert to months
+    except Exception as e:
+        print("Web Search Error:", e)
+        return []
 
-    # Find months (e.g. 24 months)
-    month_matches = re.findall(r'(\d+)\s*months?', text)
 
-    if month_matches:
-        values = [int(x) for x in month_matches]
-        return min(values)
+def extract_shelf_life_years(snippets):
+    for text in snippets:
+        text = text.lower()
+
+        year_match = re.search(r'(\d+(\.\d+)?)\s*(year|years)', text)
+        month_match = re.search(r'(\d+)\s*(month|months)', text)
+
+        if year_match:
+            return float(year_match.group(1))
+
+        if month_match:
+            months = int(month_match.group(1))
+            return months / 12
 
     return None
-
-def get_web_data(medicine_name):
-    shelf_results = search_google(f"{medicine_name} shelf life")
-    price_results = search_google(f"{medicine_name} price India")
-
-    shelf_text = extract_info(shelf_results)
-    price_text = extract_info(price_results)
-
-    shelf_life_months = extract_shelf_life(shelf_text)
-
-    return {
-        "shelf_life_raw": shelf_text,
-        "shelf_life_months": shelf_life_months,  # ✅ CLEAN VALUE
-        "price_raw": price_text
-    }

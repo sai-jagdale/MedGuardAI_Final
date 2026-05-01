@@ -1,97 +1,66 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-import requests
-import os
+from .service import process_uploaded_file, process_base64_image, find_medicine
 
-class BarcodeScanAPIView(APIView):
-    permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        barcode = request.data.get("barcode")   # from ML Kit
-        image = request.FILES.get("image")      # from upload
+@api_view(['POST'])
+def scan_from_image(request):
+    file = request.FILES.get('image')
 
-        # STEP 1: Get barcode value
-        if not barcode and image:
-            barcode = self.extract_barcode_from_image(image)
+    if not file:
+        return Response({"error": "No image provided"}, status=400)
 
-        if not barcode:
-            return Response({"error": "No barcode found"}, status=400)
+    barcodes = process_uploaded_file(file)
 
-        # STEP 2: Get medicine name
-        medicine_name = self.search_medicine_name(barcode)
+    response = []
+    for b in barcodes:
+        medicine = find_medicine(b['data'])
 
-        if not medicine_name:
-            return Response({
-                "barcode": barcode,
-                "message": "Could not identify medicine"
-            })
-
-        # STEP 3: RAG + Decision + LLM (placeholder now)
-        return Response({
-            "barcode": barcode,
-            "medicine_name": medicine_name,
-            "status": "processing_next_stage"
+        response.append({
+            "barcode": b['data'],
+            "type": b['type'],
+            "medicine": medicine
         })
-    
-    def extract_barcode_from_image(self, image):
-        # ⚠️ ML Kit works on frontend/mobile
-        # Backend fallback → use pyzbar OR skip
 
-        try:
-            from pyzbar.pyzbar import decode
-            from PIL import Image
+    return Response(response)
 
-            img = Image.open(image)
-            decoded = decode(img)
 
-            if decoded:
-                return decoded[0].data.decode("utf-8")
+@api_view(['POST'])
+def scan_from_mobile(request):
+    base64_image = request.data.get('image')
 
-        except Exception as e:
-            print("Barcode decode error:", e)
+    if not base64_image:
+        return Response({"error": "No image provided"}, status=400)
 
-        return None
+    barcodes = process_base64_image(base64_image)
 
-    def search_medicine_name(self, barcode):
-        api_key = os.environ.get("GOOGLE_API_KEY")
-        cx = os.environ.get("SEARCH_ENGINE_ID")   # ✅ updated
+    response = []
+    for b in barcodes:
+        medicine = find_medicine(b['data'])
 
-        query = f"{barcode} medicine name India 1mg netmeds pharmeasy"
+        response.append({
+            "barcode": b['data'],
+            "type": b['type'],
+            "medicine": medicine
+        })
 
-        url = "https://www.googleapis.com/customsearch/v1"
+    return Response(response)
 
-        params = {
-            "q": query,
-            "key": api_key,
-            "cx": cx,
-        }
 
-        try:
-            response = requests.get(url, params=params)
+@api_view(['POST'])
+def scan_from_code(request):
+    barcode = request.data.get('barcode')
 
-            print("STATUS:", response.status_code)
-            print("RAW:", response.text)   # 🔥 VERY IMPORTANT
+    if not barcode:
+        return Response({"error": "No barcode provided"}, status=400)
 
-            data = response.json()
+    # normalize before search
+    from .service import normalize_barcode
+    barcode = normalize_barcode(barcode)
 
-            if "items" in data:
-                for item in data["items"]:
-                    title = item.get("title", "")
-                    print("TITLE:", title)
+    medicine = find_medicine(barcode)
 
-                    # Try extracting clean name
-                    if "|" in title:
-                        return title.split("|")[0].strip()
-                    return title
-            if "items" not in data:
-                query = f"{barcode} drug name"
-                params["q"] = query
-                response = requests.get(url, params=params)
-                data = response.json()
-
-        except Exception as e:
-            print("Search error:", e)
-
-        return None
+    return Response({
+        "barcode": barcode,
+        "medicine": medicine or "Not Found"
+    })

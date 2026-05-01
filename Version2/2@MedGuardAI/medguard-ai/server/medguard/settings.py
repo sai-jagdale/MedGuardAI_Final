@@ -17,6 +17,7 @@ load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
+GOOGLE_CLOUD_VISION_API_KEY = os.getenv("GOOGLE_CLOUD_VISION_API_KEY")
 
 from logging import config
 from pathlib import Path
