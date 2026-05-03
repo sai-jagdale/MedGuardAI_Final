@@ -4,7 +4,7 @@ def generate_ai_response(api_key, prompt):
     client = genai.Client(api_key=api_key)
 
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="models/gemini-3-flash-preview",
         contents=prompt
     )
 

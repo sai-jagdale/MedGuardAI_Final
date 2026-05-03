@@ -20,9 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     # Django admin panel
     path('admin/', admin.site.urls),
-
-    # All auth-related routes go here
-    # /api/auth/register/
+    
     path('api/server/ai/', include('apps.aiassistant.urls')),
     path('api/server/history/', include('apps.history.urls')),
     path('api/server/auth/', include('apps.accounts.urls')),

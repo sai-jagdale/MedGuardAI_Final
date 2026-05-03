@@ -153,12 +153,17 @@ export const apiService = {
   },
 
   logout: async (token: string): Promise<void> => {
+    const refresh = localStorage.getItem("refresh"); // ✅ get refresh token
+
     const response = await fetch(`${API_BASE_URL}/auth/logout/`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`, // ✅ access token
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        refresh: refresh, // ✅ REQUIRED by backend
+      }),
     });
 
     if (!response.ok) {

@@ -28,6 +28,8 @@ export function AIAssistant() {
   const [sessions, setSessions] = useState<any[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const { accessToken } = useAuth(); // IMPORTANT (for token)
+  const [fullText, setFullText] = useState("");
+  const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     if (accessToken) {
@@ -35,6 +37,22 @@ export function AIAssistant() {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+    if (!fullText) return; // ✅ important
+
+    let i = 0;
+
+    const interval = setInterval(() => {
+      setDisplayedText((prev) => prev + fullText.charAt(i));
+      i++;
+
+      if (i >= fullText.length) {
+        clearInterval(interval);
+      }
+    }, 10);
+
+    return () => clearInterval(interval);
+  }, [fullText]);
 
   const handleAnalyze = async () => {
     if (!symptoms.trim()) return;
@@ -50,7 +68,7 @@ export function AIAssistant() {
     setIsAnalyzing(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/ai/symptoms/", {
+      const res = await fetch("http://127.0.0.1:8000/api/server/ai/symptoms/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +101,7 @@ export function AIAssistant() {
 
   const loadSessions = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/history/sessions/", {
+      const res = await fetch("http://127.0.0.1:8000/api/server/history/sessions/", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -99,7 +117,7 @@ export function AIAssistant() {
   const loadMessages = async (sessionId: string) => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/history/messages/${sessionId}/`,
+        `http://127.0.0.1:8000/api/server/history/messages/${sessionId}/`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -152,6 +170,39 @@ export function AIAssistant() {
     });
   };
 
+  function TypingText({ text }: { text: string }) {
+    const [displayed, setDisplayed] = useState("");
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chat]);
+
+    useEffect(() => {
+      let i = 0;
+      setDisplayed("");
+
+      const interval = setInterval(() => {
+        setDisplayed((prev) => prev + text.charAt(i));
+        i++;
+
+        if (i >= text.length) {
+          clearInterval(interval);
+        }
+      }, 10);
+
+      return () => clearInterval(interval);
+    }, [text]);
+
+    return (
+      <div>
+        {displayed.split("\n").map((line, i) => (
+          <p key={i}>{line}</p>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div>
 
@@ -199,14 +250,15 @@ export function AIAssistant() {
 
                     {/* AI */}
                     {msg.ai && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-100 px-4 py-3 rounded-xl max-w-md text-gray-700 space-y-2">
+                      <div className="flex justify-start">
+                        <div className="bg-gray-100 px-4 py-3 rounded-xl max-w-md text-gray-700 space-y-2">
 
-                    {formatAIResponse(msg.ai)}
+                          <TypingText text={msg.ai} />
+                          
 
-                  </div>
-                </div>
-              )}
+                        </div>
+                      </div>
+                    )}
 
                   </div>
                 ))}

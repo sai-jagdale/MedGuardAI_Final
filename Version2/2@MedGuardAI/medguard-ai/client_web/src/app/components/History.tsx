@@ -30,12 +30,14 @@ export function History() {
   const [viewerOpen, setViewerOpen] = useState(false);
 
   useEffect(() => {
+    if (isLoading) return; // ✅ WAIT FOR AUTH
+
     if (!isAuthenticated) {
       navigate("/login");
     } else if (accessToken) {
       fetchHistory();
     }
-  }, [isAuthenticated, accessToken]);
+  }, [isAuthenticated, accessToken, isLoading]);
 
   const fetchHistory = async () => {
     if (!accessToken) return;
@@ -101,34 +103,42 @@ export function History() {
 
   const handleOpen = async (item: any) => {
     try {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/server/history/messages/${item.id}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      if (item.type === "chat") {
+        const res = await fetch(
+          `http://127.0.0.1:8000/api/server/history/messages/${item.id}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
 
-      if (!res.ok) throw new Error("Failed");
+        if (!res.ok) throw new Error("Failed");
 
-      const data = await res.json();
+        const data = await res.json();
 
-      setSelectedItem(data); // messages array
+        setSelectedItem(data); // chat messages
+      } else {
+        setSelectedItem(item); // medicine data
+      }
+
       setViewerOpen(true);
 
     } catch (error) {
-      toast.error("Failed to load chat");
+      toast.error("Failed to load data");
     }
   };
 
   const filteredHistory = medicineHistory.filter((item) => {
     const matchesSearch =
-      (item.preview || "").toLowerCase().includes(searchQuery.toLowerCase());
+      (item.preview || item.medicine || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
 
     const matchesFilter =
       filterStatus === "all" ||
-      (filterStatus === "chat" && item.type === "chat");
+      item.status === filterStatus || // ✅ medicine filters
+      (filterStatus === "chat" && item.type === "chat"); // ✅ chat filter
 
     return matchesSearch && matchesFilter;
   });
