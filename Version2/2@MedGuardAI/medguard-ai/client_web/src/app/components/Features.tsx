@@ -16,8 +16,11 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function Features() {
+  const { isAuthenticated } = useAuth();
+
   const features = [
     {
       icon: Camera,
@@ -78,7 +81,7 @@ export function Features() {
     {
       icon: Zap,
       title: "Instant Results",
-      description: "Get verification results in seconds with our high-speed AI processing and real-time analysis.",
+      description: "Get verification results in minutess with our high-speed AI processing and real-time analysis.",
       color: "from-yellow-500 to-yellow-600",
       bgColor: "bg-yellow-50/50",
     },
@@ -91,8 +94,8 @@ export function Features() {
     },
     {
       icon: Globe,
-      title: "Global Database",
-      description: "Access to international pharmaceutical databases covering medicines from over 150 countries.",
+      title: "Indian Database",
+      description: "Access to Indian pharmaceutical databases covering medicines from all over the country.",
       color: "from-teal-500 to-teal-600",
       bgColor: "bg-teal-50/50",
     },
@@ -154,7 +157,7 @@ export function Features() {
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Join thousands of users who trust MedGuard AI to ensure their medicine safety every day.
           </p>
-          <Link to="/verify">
+          <Link to={isAuthenticated ? "/verify" : "/register"}>
             <Button size="lg" className="bg-gradient-to-r from-[#4A90E2] to-[#6FCF97] hover:opacity-90 shadow-lg rounded-xl text-base">
               Start Verification Now
               <ArrowRight className="w-5 h-5 ml-2" />

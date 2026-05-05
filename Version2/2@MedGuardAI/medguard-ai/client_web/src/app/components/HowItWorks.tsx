@@ -11,35 +11,38 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function HowItWorks() {
+  const { isAuthenticated } = useAuth();
+  
   const steps = [
     {
       number: "01",
       icon: Camera,
       title: "Capture or Upload",
-      description: "Take a photo of your medicine packaging or upload an existing image. You can also scan barcodes or enter batch numbers manually.",
+      description: "Take a photo of your medicine packaging or upload an existing image. You can also scan barcodes or enter batch numbers manually. Or either enter the name of the medicine manually",
       color: "from-[#4A90E2] to-[#5BA3E8]",
     },
     {
       number: "02",
       icon: Scan,
       title: "AI Analysis",
-      description: "Our advanced AI analyzes the image using OCR, pattern recognition, and machine learning to extract all relevant information.",
+      description: "Our advanced AI analyzes the image using OCR for data extraction, decoding the barcode and use it for RAG search.",
       color: "from-[#5BA3E8] to-[#6CB8EE]",
     },
     {
       number: "03",
       icon: FileSearch,
       title: "Database Verification",
-      description: "We cross-reference the extracted data with global pharmaceutical databases and regulatory authority records.",
+      description: "We cross-reference the extracted data with Indian pharmaceutical databases and regulatory authority records.",
       color: "from-[#6CB8EE] to-[#6FCF97]",
     },
     {
       number: "04",
       icon: CheckCircle2,
       title: "Get Results",
-      description: "Receive instant verification results with detailed insights, safety status, and recommendations within seconds.",
+      description: "Receive instant verification results with detailed insights, safety status, and recommendations within minutes.",
       color: "from-[#6FCF97] to-[#7DD9A3]",
     },
   ];
@@ -47,18 +50,18 @@ export function HowItWorks() {
   const benefits = [
     {
       icon: Shield,
-      title: "99.8% Accuracy",
+      title: "97.8% Accuracy",
       description: "Industry-leading accuracy powered by advanced AI algorithms",
     },
     {
       icon: Sparkles,
-      title: "2-Second Results",
-      description: "Get instant verification results in under 2 seconds",
+      title: "2-Minute Results",
+      description: "Get instant verification results in under 2 minutes",
     },
     {
       icon: CheckCircle2,
-      title: "500K+ Verified",
-      description: "Over half a million medicines verified successfully",
+      title: "50K+ Verified Medicine Database",
+      description: "Over half a million verified medicines successfully added in the database",
     },
   ];
 
@@ -136,10 +139,10 @@ export function HowItWorks() {
             Experience the Power of AI Verification
           </h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Try MedGuard AI now and see how easy it is to verify medicine authenticity in seconds.
+            Try MedGuard AI now and see how easy it is to verify medicine authenticity in minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/verify">
+            <Link to={isAuthenticated ? "/verify" : "/register"}>
               <Button size="lg" className="bg-gradient-to-r from-[#4A90E2] to-[#6FCF97] hover:opacity-90 shadow-lg rounded-xl text-base">
                 <Upload className="w-5 h-5 mr-2" />
                 Verify Medicine Now
@@ -147,7 +150,7 @@ export function HowItWorks() {
             </Link>
             <Link to="/register">
               <Button size="lg" variant="outline" className="border-2 border-[#4A90E2] text-[#4A90E2] hover:bg-blue-50 rounded-xl text-base">
-                Create Free Account
+                Create Account
               </Button>
             </Link>
           </div>

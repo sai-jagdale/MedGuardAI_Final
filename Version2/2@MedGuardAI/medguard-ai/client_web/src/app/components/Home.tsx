@@ -17,8 +17,11 @@ import {
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function Home() {
+  const { isAuthenticated } = useAuth();
+  
   return (
     <div>
       {/* Hero Section */}
@@ -58,8 +61,8 @@ export function Home() {
                     <CheckCircle2 className="w-6 h-6 text-[#6FCF97]" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">500K+</div>
-                    <div className="text-xs text-gray-600">Verified</div>
+                    <div className="text-2xl font-bold text-gray-900">50K+</div>
+                    <div className="text-xs text-gray-600">Verified Medicine Dataset</div>
                   </div>
                 </div>
                 <div className="h-12 w-px bg-gray-200"></div>
@@ -68,20 +71,12 @@ export function Home() {
                     <Award className="w-6 h-6 text-[#4A90E2]" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-gray-900">99.8%</div>
+                    <div className="text-2xl font-bold text-gray-900">97.8%</div>
                     <div className="text-xs text-gray-600">Accuracy</div>
                   </div>
                 </div>
                 <div className="h-12 w-px bg-gray-200"></div>
-                <div className="flex items-center gap-2">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center shadow-md">
-                    <Users className="w-6 h-6 text-purple-500" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-gray-900">50K+</div>
-                    <div className="text-xs text-gray-600">Users</div>
-                  </div>
-                </div>
+                
               </div>
             </div>
             
@@ -147,7 +142,7 @@ export function Home() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Verification</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Machine learning models verify authenticity and detect counterfeit medicines
+                  AI based strong verification , authenticity and detectection of counterfeit medicines
                 </p>
               </CardContent>
             </Card>
@@ -218,7 +213,7 @@ export function Home() {
                     AI Analysis
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Our AI uses OCR, FAISS vector search, and LLM models to extract data, verify authenticity, and check against regulatory databases.
+                    Our AI uses OCR, RAG similarity search, and LLM models to extract data, verify authenticity, and check against regulatory databases.
                   </p>
                 </div>
               </div>
@@ -234,7 +229,7 @@ export function Home() {
                     Get Instant Results
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Receive comprehensive verification results with color-coded status, AI summary, and safety recommendations within seconds.
+                    Receive comprehensive verification results with color-coded status, AI summary, and safety recommendations within minutes.
                   </p>
                 </div>
               </div>
@@ -330,7 +325,7 @@ export function Home() {
               </h2>
               
               <p className="text-lg text-gray-600 leading-relaxed">
-                MedGuard AI was created to combat the growing threat of counterfeit medicines in India. Using cutting-edge AI technology including OCR, FAISS vector search, and large language models, we provide instant, accurate medicine verification.
+                MedGuard AI was created to combat the growing threat of counterfeit medicines in India. Using cutting-edge AI technology including OCR, RAG search, and LLMs, we provide instant, accurate medicine verification.
               </p>
               
               <p className="text-lg text-gray-600 leading-relaxed">
@@ -374,14 +369,14 @@ export function Home() {
             Start Verifying Medicines Today
           </h2>
           <p className="text-lg sm:text-xl text-white/90 mb-8">
-            Join thousands of users who trust MedGuard AI for safe, instant medicine verification
+            Start using MedGuard AI for safe, instant medicine verification
           </p>
-          <Link to="/register">
+          <Link to={isAuthenticated ? "/verify" : "/register"}>
             <Button
               size="lg"
               className="bg-white text-[#4A90E2] hover:bg-gray-50 shadow-2xl hover:shadow-3xl transition-all rounded-xl text-base"
             >
-              Get Started
+              {isAuthenticated ? "Verify Medicine" : "Get Started"}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>

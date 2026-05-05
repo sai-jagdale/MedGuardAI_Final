@@ -136,11 +136,11 @@ export function Verify() {
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             Verify Your Medicine
             <span className="block mt-2 bg-gradient-to-r from-[#4A90E2] to-[#6FCF97] bg-clip-text text-transparent">
-              In Seconds
+              In Minutes
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Upload a photo, scan a barcode, or enter batch details to instantly verify medicine authenticity.
+            Upload a photo, scan a barcode, or enter batch details to verify medicine authenticity.
           </p>
         </div>
 

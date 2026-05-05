@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import { useAuth } from "../../contexts/AuthContext";
 
 export function About() {
   const stats = [
-    { number: "500K+", label: "Medicines Verified", icon: CheckCircle2 },
-    { number: "50K+", label: "Active Users", icon: Users },
-    { number: "99.8%", label: "Accuracy Rate", icon: Award },
-    { number: "150+", label: "Countries Covered", icon: Globe },
+    { number: "50K+", label: "Verified Medicine Dataset", icon: CheckCircle2 },
+    { number: "97.8%", label: "Accuracy Rate", icon: Award },
   ];
+  const { isAuthenticated } = useAuth();
 
   const values = [
     {
@@ -39,8 +39,8 @@ export function About() {
     },
     {
       icon: Globe,
-      title: "Global Impact",
-      description: "Fighting counterfeit medicines is a global challenge. We're building a worldwide network of protection and verification.",
+      title: "Impact",
+      description: "Fighting counterfeit medicines is a global challenge. We're building a countrywide network of protection and verification.",
     },
   ];
 
@@ -65,7 +65,7 @@ export function About() {
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-8 mb-20">
+        <div className="grid md:grid-cols-2 gap-8 mb-20">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -97,13 +97,13 @@ export function About() {
                       The World Health Organization estimates that 1 in 10 medical products in low and middle-income countries is substandard or falsified. This alarming statistic inspired us to create MedGuard AI.
                     </p>
                     <p>
-                      Founded in 2024 by a team of healthcare professionals, AI researchers, and pharmaceutical experts, we set out to build a solution that could help anyone verify medicine authenticity instantly using just their smartphone.
+                      Founded in 2025 by a team of healthcare professionals, AI researchers, and pharmaceutical experts, we set out to build a solution that could help anyone verify medicine authenticity instantly using just their smartphoneS , laptops , tablets , etc....
                     </p>
                     <p>
-                      Today, MedGuard AI uses advanced artificial intelligence, optical character recognition, and blockchain technology to cross-reference medicines with global pharmaceutical databases, helping protect patients from counterfeit drugs.
+                      MedGuard AI uses advanced artificial intelligence, optical character recognition, and RAG vector database technology to cross-reference medicines with indian pharmaceutical databases, helping protect patients from counterfeit drugs.
                     </p>
                     <p>
-                      Our platform has verified over 500,000 medicines and helped thousands of users ensure their medications are safe and authentic. We're committed to making healthcare safer for everyone, everywhere.
+                      Our platform can verifiy over 50,000 medicines and helped thousands of users ensure their medications are safe and authentic. We're committed to making healthcare safer for everyone, everywhere.
                     </p>
                   </div>
                 </div>
@@ -141,9 +141,9 @@ export function About() {
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Be part of the movement to eliminate counterfeit medicines. Start verifying your medicines with MedGuard AI today.
           </p>
-          <Link to="/register">
+          <Link to={isAuthenticated ? "/verify" : "/register"}>
             <Button size="lg" className="bg-gradient-to-r from-[#4A90E2] to-[#6FCF97] hover:opacity-90 shadow-lg rounded-xl text-base">
-              Get Started
+              {isAuthenticated ? "Verify Medicine" : "Get Started"}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
