@@ -58,7 +58,6 @@ User Input → React UI → Django REST Framework Backend → Processing Layer
 → Gemini AI Assistant → Output + History Storage
 
 ---
----
 
 
 ## 📜 License
