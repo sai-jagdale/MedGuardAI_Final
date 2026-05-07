@@ -53,12 +53,13 @@ Phase 2 introduces:
 
 ## 🧩 Workflow
 
-```bash
 User Input → React UI → Django REST Framework Backend → Processing Layer
 → OCR / Barcode → AI Verification → Database
 → Gemini AI Assistant → Output + History Storage
 
 ---
+---
+
 
 ## 📜 License
 
