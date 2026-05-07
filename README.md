@@ -54,26 +54,9 @@ Phase 2 introduces:
 ## 🧩 Workflow
 
 ```bash
-User Input → React UI → Flask Backend → Processing Layer
+User Input → React UI → Django REST Framework Backend → Processing Layer
 → OCR / Barcode → AI Verification → Database
 → Gemini AI Assistant → Output + History Storage
-```
-
----
-
-## 📁 Project Structure
-
-```bash
-MedGuard-AI-Phase2/
-├── frontend/
-├── backend/
-├── database/
-├── models/
-├── utils/
-└── README.md
-```
-
-Got it 👍 — you want it **simple, clean, and professional**, not dramatic or casual
 
 ---
 
@@ -105,7 +88,7 @@ Any unauthorized use of this project is strictly prohibited.
 
 ## 👨‍💻 Author
 
-**Sai Jagdale**
+**Sai Jagdale & team**
 MIT ADT University, Pune
 
 ---
